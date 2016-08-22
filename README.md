@@ -60,6 +60,27 @@ need to upgrade:
 - Once you're happy it works, disable the old hubot integration from
   https://my.slack.com/services
 
+## Upgrading from version 3 or earlier of hubot-slack
+
+Version 4 of hubot-slack uses IDs to represent Slack "rooms"; until version 3,
+rooms were represented by their names.  If your scripts rely on channel names,
+you can use the client to translate between names and IDs.  For example:
+
+```
+  robot.respond /what room am i in/i, (msg) ->
+    room = msg.message.room
+    if robot.adapterName == 'slack'
+      room = robot.adapter.client.rtm.dataStore.getChannelById(room).name
+    msg.send "You are in the #{room} room."
+
+  # e.g. `hubot say hi to the folks in general`
+  robot.respond /say hi to the folks in (.*)/, (msg) ->
+    room = msg.match[1]
+    if robot.adapterName == 'slack'
+      room = robot.adapter.client.rtm.dataStore.getChannelByName(room).id
+    robot.messageRoom room, 'hi there!'
+```
+
 ## Configuration
 
 This adapter uses the following environment variables:
