@@ -8,7 +8,7 @@ SLACK_CLIENT_OPTIONS =
 
 class SlackClient
 
-  constructor: (options) ->
+  constructor: (@robot, options) ->
     _.merge SLACK_CLIENT_OPTIONS, options
 
     # RTM is the default communication client
@@ -43,7 +43,10 @@ class SlackClient
         {user, channel, bot_id} = message
 
         message.text = @format.incoming(message)
-        message.user = @rtm.dataStore.getUserById(user) if user
+        if user
+          user = @rtm.dataStore.getUserById(user)
+          user['email_address'] = user.profile.email
+          message.user = @robot.brain.userForId(user.id, user)
         message.bot = @rtm.dataStore.getBotById(bot_id) if bot_id
         message.channel = @rtm.dataStore.getChannelGroupOrDMById(channel) if channel
         callback(message)

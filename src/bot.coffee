@@ -5,7 +5,7 @@ SlackClient = require './client'
 class SlackBot extends Adapter
 
   constructor: (@robot, @options) ->
-    @client = new SlackClient(@options)
+    @client = new SlackClient(@robot, @options)
 
 
   ###
@@ -153,7 +153,7 @@ class SlackBot extends Adapter
         @robot.logger.debug "#{user.name} set the topic in #{channel.name} to #{topic}"
         @receive new TopicMessage user, message.topic, message.ts
 
-      else        
+      else
         @robot.logger.debug "Received message: '#{text}' in channel: #{channel.name}, subtype: #{subtype}"
         message.user = user
         @receive new CatchAllMessage(message)
