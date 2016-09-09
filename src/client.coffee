@@ -47,6 +47,7 @@ class SlackClient
           user = @rtm.dataStore.getUserById(user)
           user['email_address'] = user.profile.email
           message.user = @robot.brain.userForId(user.id, user)
+        console.log "message: #{message}"
         message.bot = @rtm.dataStore.getBotById(bot_id) if bot_id
         message.channel = @rtm.dataStore.getChannelGroupOrDMById(channel) if channel
         callback(message)

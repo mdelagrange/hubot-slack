@@ -150,7 +150,7 @@ beforeEach ->
 
   @formatter = new SlackFormatter @stubs.client.dataStore
 
-  @client = new SlackClient token: 'xoxb-faketoken'
+  @client = new SlackClient @stubs.robot, token: 'xoxb-faketoken'
   _.merge @client.rtm, @stubs.rtm
   _.merge @client.web.chat, @stubs.chatMock
   _.merge @client.web.channels, @stubs.channelsMock
